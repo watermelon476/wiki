@@ -15,3 +15,8 @@ Content-Type: application/x-www-form-urlencoded
 name=test
 
 ###
+
+GET http://localhost:8081/test/list
+Accept: application/json
+
+###
