@@ -6,5 +6,5 @@ create table `test`(
     primary key (`id`)
 )engine=innodb default character set =utf8mb4 comment ='测试';
 
-INSERT INTO wiki.test (id, name, password)
+INSERT INTO test (id, name, password)
 VALUES (2, 'lili', '654321');
