@@ -5,6 +5,7 @@ import com.example.wiki.domain.EbookExample;
 import com.example.wiki.mapper.EbookMapper;
 import com.example.wiki.req.EbookReq;
 import com.example.wiki.resp.EbookResp;
+import com.example.wiki.resp.PageResp;
 import com.example.wiki.util.CopyUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -28,14 +29,14 @@ public class EbookService {
 
     private static final Logger LOG = LoggerFactory.getLogger(EbookService.class);
 
-    public List<EbookResp> list(EbookReq req){
+    public PageResp<EbookResp> list(EbookReq req){
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
         if(!ObjectUtils.isEmpty(req.getName())) {
             criteria.andNameLike("%" + req.getName() + "%");
         }
         // 注意：pageNum是从1开始的，另外这个语句只对遇到的第一个select语句起作用，所以保险起见就写在一块
-        PageHelper.startPage(1,3);
+        PageHelper.startPage(req.getPage(),req.getSize());
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 
         PageInfo<Ebook> pageInfo = new PageInfo<>(ebookList);
@@ -49,8 +50,13 @@ public class EbookService {
 //            EbookResp ebookResp = CopyUtil.copy(ebook,EbookResp.class);  //对象复制
 //            respList.add(ebookResp);
 //        }
+
         List<EbookResp> respList = CopyUtil.copyList(ebookList,EbookResp.class); //列表复制
 
-        return respList;
+        PageResp<EbookResp> pageResp = new PageResp<>();
+        pageResp.setTotal(pageInfo.getTotal());
+        pageResp.setList(respList);
+
+        return pageResp;
     }
 }
