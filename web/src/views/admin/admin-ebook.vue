@@ -10,8 +10,8 @@
             :loading="loading"
             @change="handleTableChange"
         >
-          <template #cover="{ text: cover }">
-            <img v-if="cover" :src="cover" alt="avatar"/>
+          <template #cover="{ text: cover }" >
+            <img v-if="cover" :src="cover" alt="avatar" style="width:40px;height:40px"/>
           </template>
           <template v-slot:action="{ text, record }">
             <a-space size="small">
@@ -42,7 +42,7 @@ export default defineComponent({
     const ebooks = ref();
     const pagination = ref({
       current: 1,
-      pageSize: 10,
+      pageSize: 4,
       total: 0
     });
     const loading = ref(false);
@@ -58,8 +58,12 @@ export default defineComponent({
         dataIndex: 'name'
       },
       {
-        title: '分类',
-        slots: {customRender: 'category'}
+        title: '分类1',
+        dataIndex: 'category1Id'
+      },
+      {
+        title: '分类2',
+        dataIndex: 'category2Id'
       },
       {
         title: '文档数',
@@ -120,7 +124,10 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      handleQuery({});
+      handleQuery({
+        page: 1,
+        size: pagination.value.pageSize
+      });
     });
 
     return {
