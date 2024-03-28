@@ -27,6 +27,14 @@
       </a-layout-content>
     </a-layout>
   </a-layout-content>
+  <a-modal
+      title="Title"
+      v-model:visible="modalVisible"
+      :confirm-loading="modalLoading"
+      @ok="handleModalOk"
+  >
+    <p> modalText </p>
+  </a-modal>
 </template>
 
 <script lang="ts">
@@ -122,6 +130,23 @@ export default defineComponent({
         size: pagination.pageSize
       });
     };
+    // --------------------表单------------------------
+    const modalVisible = ref<boolean>(false);
+    const modalLoading = ref<boolean>(false);
+
+    const handleModalOk = () => {
+      modalLoading.value = true;
+      setTimeout(() => {
+        modalVisible.value = false;
+        modalLoading.value = false;
+      }, 2000);
+    };
+    /**
+     * 编辑
+     */
+    const edit =(record:any)=>{
+      modalVisible.value = true;
+    };
 
     onMounted(() => {
       handleQuery({
@@ -137,6 +162,12 @@ export default defineComponent({
       columns,
       loading,
       handleTableChange,
+
+      edit,
+
+      modalVisible,
+      modalLoading,
+      handleModalOk
     }
   }
 })
