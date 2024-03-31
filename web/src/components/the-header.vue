@@ -4,9 +4,9 @@
     <a-menu
         theme="dark"
         mode="horizontal"
-        v-model:selectedKeys="selectedKeys1"
         :style="{ lineHeight: '64px' }"
     >
+      <!--        v-model:selectedKeys="selectedKeys1"-->
       <a-menu-item key="/">
         <router-link to="/">首页</router-link>
       </a-menu-item>
