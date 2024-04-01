@@ -3,9 +3,21 @@
     <a-layout style="padding: 24px 0; background: #fff;-ms-layout-flow: vertical-ideographic">
       <a-layout-content :style="{ padding: '0 24px', minHeight: '280px' }">
         <p>
-          <a-button type="primary" @click="add()" size="large">
-            新增
-          </a-button>
+          <a-form layout="inline" :model="param">
+            <a-form-item>
+              <a-input v-model:value="param.name" placeholder="名称"></a-input>
+            </a-form-item>
+            <a-form-item>
+              <a-button type="primary" @click="handleQuery({page:1,size:pagination.pageSize})" >
+                查询
+              </a-button>
+            </a-form-item>
+            <a-form-item>
+              <a-button type="primary" @click="add()" >
+                新增
+              </a-button>
+            </a-form-item>
+          </a-form>
         </p>
         <a-table
             :columns="columns"
@@ -67,7 +79,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, ref} from 'vue';
+import {defineComponent, onMounted, reactive, ref, UnwrapRef} from 'vue';
 import axios from 'axios';
 import {message} from 'ant-design-vue';
 
@@ -120,6 +132,11 @@ export default defineComponent({
         slots: {customRender: 'action'}
       }
     ];
+
+    interface FormState {
+      user: string;
+      password: string;
+    }
 
     /**
      * 数据查询
@@ -229,6 +246,7 @@ export default defineComponent({
       edit,
       add,
       handleDelete,
+      handleQuery,
 
       ebook,
       modalVisible,
