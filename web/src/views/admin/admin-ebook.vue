@@ -134,10 +134,6 @@ export default defineComponent({
       }
     ];
 
-    interface FormState {
-      user: string;
-      password: string;
-    }
 
     /**
      * 数据查询
