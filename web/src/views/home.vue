@@ -24,7 +24,11 @@
         </a-menu>
       </a-layout-sider>
       <a-layout-content :style="{ padding: '0 24px', minHeight: '280px' }">
-        <a-list item-layout="vertical" size="large"
+        <div class="welcome" v-show="isShowWelcome">
+          <h1>欢迎使用知识库</h1>
+        </div>
+        <a-list v-show="!isShowWelcome"
+                item-layout="vertical" size="large"
                 :grid="{gutter:20,column:3}"
                 :data-source="ebooks">
           <template #renderItem="{ item }">
@@ -73,7 +77,7 @@ import {message} from "ant-design-vue";
 
 export default defineComponent({
   name: 'Home',
-  setup() {
+  setup: function () {
     // console.log('setup');
     const ebooks = ref();
     const ebooks1 = reactive({books: []});
@@ -100,23 +104,31 @@ export default defineComponent({
       });
     };
 
-    const handleClick = () => {
-      console.log("menu click")
+    const isShowWelcome = ref(true);
+
+    const handleClick = (value: any) => {
+      // console.log("menu click", value)
+      // if (value.key === 'welcome') {
+      //   isShowWelcome.value = true;
+      // } else {
+      //   isShowWelcome.value = false;
+      // }
+      isShowWelcome.value = value.key === 'welcome' ? true : false;
     };
 
     onMounted(() => {
       handleQueryCategory(),
-      axios.get('/ebook/list', {
-        params: {
-          page: 1,
-          size: 1000
-        }
-      }).then((response) => {
-        const data = response.data;
-        ebooks.value = data.content.list;
-        ebooks1.books = data.content.list;
-        // console.log(response)
-      });
+          axios.get('/ebook/list', {
+            params: {
+              page: 1,
+              size: 1000
+            }
+          }).then((response) => {
+            const data = response.data;
+            ebooks.value = data.content.list;
+            ebooks1.books = data.content.list;
+            // console.log(response)
+          });
     })
 
     return {
@@ -136,7 +148,9 @@ export default defineComponent({
       ],
 
       level1,
-      handleClick
+      handleClick,
+
+      isShowWelcome
     }
   }
 });
