@@ -73,20 +73,41 @@
       <a-form-item label="顺序">
         <a-input v-model:value="doc.sort"/>
       </a-form-item>
+      <a-form-item label="内容">
+        <div style="border: 1px solid #ccc">
+          <Toolbar
+              style="border-bottom: 1px solid #ccc"
+              :editor="editorRef"
+              :defaultConfig="toolbarConfig"
+              :mode="mode"
+          />
+          <Editor
+              style="height: 500px; overflow-y: hidden;"
+              v-model="valueHtml"
+              :defaultConfig="editorConfig"
+              :mode="mode"
+              @onCreated="handleCreated"
+          />
+        </div>
+      </a-form-item>
     </a-form>
   </a-modal>
 </template>
 
 <script lang="ts">
-import {createVNode, defineComponent, onMounted, reactive, ref, UnwrapRef} from 'vue';
+import {createVNode, defineComponent, onMounted, onBeforeUnmount, ref, shallowRef} from 'vue';
 import axios from 'axios';
 import {message, Modal} from 'ant-design-vue';
 import {Tool} from '@/util/tool';
 import {useRoute} from "vue-router";
 import {ExclamationCircleOutlined} from '@ant-design/icons-vue';
 
+import '@wangeditor/editor/dist/css/style.css' // 引入 css
+import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+
 export default defineComponent({
   name: 'AdminDoc',
+  components: { Editor, Toolbar },
   setup() {
     const route = useRoute()
     console.log("路由：", route);
@@ -163,6 +184,26 @@ export default defineComponent({
     const doc = ref({});
     const modalVisible = ref<boolean>(false);
     const modalLoading = ref<boolean>(false);
+
+    // 编辑器实例，必须用 shallowRef
+    const editorRef = shallowRef()
+
+    // 内容 HTML
+    const valueHtml = ref('<p>hello</p>')
+
+    const toolbarConfig = {}
+    const editorConfig = { placeholder: '请输入内容...' }
+
+    // 组件销毁时，也及时销毁编辑器
+    onBeforeUnmount(() => {
+      const editor = editorRef.value
+      if (editor == null) return
+      editor.destroy()
+    })
+
+    const handleCreated = (editor:any) => {
+      editorRef.value = editor // 记录 editor 实例，重要！
+    }
 
     const handleModalOk = () => {
       modalLoading.value = true;
@@ -300,6 +341,9 @@ export default defineComponent({
 
     onMounted(() => {
       handleQuery();
+      // setTimeout(() => {
+      //   valueHtml.value = '<p>模拟 Ajax 异步设置内容</p>'
+      // }, 1500)
     });
 
     return {
@@ -318,6 +362,13 @@ export default defineComponent({
       modalVisible,
       modalLoading,
       handleModalOk,
+
+      editorRef,
+      valueHtml,
+      mode: 'default', // 或 'simple'
+      toolbarConfig,
+      editorConfig,
+      handleCreated,
 
       treeSelectData
     }
