@@ -62,10 +62,10 @@
               </a-form>
             </p>
             <a-form :model="doc" layout="vertical">
-              <a-form-item label="名称">
+              <a-form-item>
                 <a-input v-model:value="doc.name" placeholder="名称"/>
               </a-form-item>
-              <a-form-item label="父文档">
+              <a-form-item>
                 <a-tree-select
                     v-model:value="doc.parent"
                     style="width: 100%"
@@ -77,10 +77,10 @@
                 >
                 </a-tree-select>
               </a-form-item>
-              <a-form-item label="顺序">
+              <a-form-item>
                 <a-input v-model:value="doc.sort" placeholder="顺序"/>
               </a-form-item>
-              <a-form-item label="内容">
+              <a-form-item>
                 <div style="border: 1px solid #ccc">
                   <Toolbar
                       style="border-bottom: 1px solid #ccc"
@@ -183,6 +183,19 @@ export default defineComponent({
           level1.value = Tool.array2Tree(docs.value, 0);
           console.log("树形结构", level1.value);
 
+        } else {
+          message.error(data.message);
+        }
+      });
+    };
+    /**
+     * 内容查询
+     **/
+    const handleQueryContent = () => {
+      axios.get("/doc/find-content/"+doc.value.id).then((response) => {
+        const data = response.data;
+        if (data.success) {
+          valueHtml.value = data.content;
         } else {
           message.error(data.message);
         }
@@ -306,7 +319,7 @@ export default defineComponent({
     const edit = (record: any) => {
       modalVisible.value = true;
       doc.value = Tool.copy(record);
-
+      handleQueryContent();
       // 不能选择当前节点及其所有子孙节点，作为父节点，会使树断开
       treeSelectData.value = Tool.copy(level1.value);
       setDisable(treeSelectData.value, record.id);
