@@ -208,8 +208,8 @@ export default defineComponent({
     treeSelectData.value = [];
     const doc = ref();
     doc.value = {};
-    const modalVisible = ref<boolean>(false);
-    const modalLoading = ref<boolean>(false);
+    // const modalVisible = ref<boolean>(false);
+    // const modalLoading = ref<boolean>(false);
 
     // 编辑器实例，必须用 shallowRef
     const editorRef = shallowRef()
@@ -232,13 +232,14 @@ export default defineComponent({
     }
 
     const handleSave = () => {
-      modalLoading.value = true;
+      // modalLoading.value = true;
       doc.value.content = valueHtml.value;
       axios.post("/doc/save", doc.value).then((response) => {
-        modalLoading.value = false;
+        // modalLoading.value = false;
         const data = response.data; // data = commonResp
         if (data.success) {
-          modalVisible.value = false;
+          // modalVisible.value = false;
+          message.success("保存成功！");
 
           // 重新加载列表
           handleQuery();
@@ -317,7 +318,8 @@ export default defineComponent({
      * 编辑
      */
     const edit = (record: any) => {
-      modalVisible.value = true;
+      // modalVisible.value = true;
+      valueHtml.value = ""
       doc.value = Tool.copy(record);
       handleQueryContent();
       // 不能选择当前节点及其所有子孙节点，作为父节点，会使树断开
@@ -332,7 +334,8 @@ export default defineComponent({
      * 新增
      */
     const add = () => {
-      modalVisible.value = true;
+      // modalVisible.value = true;
+      valueHtml.value = ""
       doc.value = {
         ebookId: route.query.ebookId
       };
@@ -386,8 +389,8 @@ export default defineComponent({
       handleQuery,
 
       doc,
-      modalVisible,
-      modalLoading,
+      // modalVisible,
+      // modalLoading,
       handleSave,
 
       editorRef,
