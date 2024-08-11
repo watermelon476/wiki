@@ -14,7 +14,7 @@
             </a-tree>
           </a-col>
           <a-col :span="18">
-
+              <div :inner="html"></div>
           </a-col>
         </a-row>
       </div>
@@ -33,7 +33,7 @@ export default defineComponent({
   name: 'Doc',
   setup() {
     const route = useRoute()
-
+    const html = ref();
     const docs = ref();
 
     /**
@@ -68,6 +68,23 @@ export default defineComponent({
         }
       });
     };
+    /**
+     * 内容查询
+     **/
+    const handleQueryContent = (id: number) => {
+      axios.get("/doc/find-content/" + id).then((response) => {
+        const data = response.data;
+        if (data.success) {
+          html.value = data.content;
+        } else {
+          message.error(data.message);
+        }
+      });
+    };
+
+    const onSelect = (selectedKeys:any,info:any)=>{
+
+    }
 
     onMounted(() => {
       handleQuery();
@@ -75,6 +92,7 @@ export default defineComponent({
 
     return {
       level1,
+      html,
     }
   }
 })
