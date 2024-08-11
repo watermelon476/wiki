@@ -7,14 +7,14 @@
             <a-tree
                 v-if="level1.length > 0"
                 :tree-data="level1"
-                @select="onselect"
+                @select="onSelect"
                 :replaceFields="{title:'name',key:'id',value:'id'}"
                 :defaultExpandAll="true"
             >
             </a-tree>
           </a-col>
           <a-col :span="18">
-              <div :inner="html"></div>
+              <div :innerHTML="html"></div>
           </a-col>
         </a-row>
       </div>
@@ -83,8 +83,12 @@ export default defineComponent({
     };
 
     const onSelect = (selectedKeys:any,info:any)=>{
-
-    }
+      console.log('selected',selectedKeys,info);
+      if(Tool.isNotEmpty(selectedKeys)){
+        // 加载内容
+        handleQueryContent(selectedKeys[0]);
+      }
+    };
 
     onMounted(() => {
       handleQuery();
@@ -92,6 +96,7 @@ export default defineComponent({
 
     return {
       level1,
+      onSelect,
       html,
     }
   }
