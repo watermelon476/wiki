@@ -1,7 +1,7 @@
 <template>
   <a-layout-content style="padding: 0 50px">
     <a-layout style="padding: 24px 0; background: #fff;-ms-layout-flow: vertical-ideographic">
-      <div class="doc">
+      <h3 v-if="level1.length === 0" style="padding-left: 15px">对不起，找不到相关文档！</h3>
         <a-row>
           <a-col :span="6">
             <a-tree
@@ -18,7 +18,6 @@
               <div class="wangeditor" :innerHTML="html"></div>
           </a-col>
         </a-row>
-      </div>
     </a-layout>
   </a-layout-content>
 </template>
