@@ -6,9 +6,11 @@
         mode="horizontal"
         :style="{ lineHeight: '64px' }"
     >
-      <!--        v-model:selectedKeys="selectedKeys1"-->
       <a-menu-item key="/">
         <router-link to="/">首页</router-link>
+      </a-menu-item>
+      <a-menu-item key="/admin/user">
+        <router-link to="/admin/user">用户管理</router-link>
       </a-menu-item>
       <a-menu-item key="/admin/ebook">
         <router-link to="/admin/ebook">电子书管理</router-link>
