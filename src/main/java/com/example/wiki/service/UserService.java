@@ -84,8 +84,9 @@ public class UserService {
                 throw new BusinessException(BusinessExceptionCode.USER_LOGIN_NAME_EXIST);
             }
         }else{
-            // 更新
-            userMapper.updateByPrimaryKey(user);
+            // 更新 加上Selective表示值为空的属性就不更新,有值的属性才更新
+            user.setLoginName(null);
+            userMapper.updateByPrimaryKeySelective(user);
         }
 
     }
