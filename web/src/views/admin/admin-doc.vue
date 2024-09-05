@@ -106,7 +106,7 @@
           </a-col>
         </a-row>
 
-        <a-drawer width="900" placement="right" :closable="false" :visible="drawerVisible" @close="onDrawerClose">
+        <a-drawer width="900" placement="right" :closable="false" v-model:open="drawerVisible" @close="onDrawerClose">
           <div class="wangeditor" :innerHTML="previewHtml"></div>
         </a-drawer>
 
@@ -115,7 +115,7 @@
   </a-layout-content>
   <!--  <a-modal-->
   <!--      title="文档表单"-->
-  <!--      v-model:visible="modalVisible"-->
+  <!--      v-model:open="modalVisible"-->
   <!--      :confirm-loading="modalLoading"-->
   <!--      @ok="handleModalOk"-->
   <!--  >-->

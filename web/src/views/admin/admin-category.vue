@@ -50,7 +50,7 @@
   </a-layout-content>
   <a-modal
       title="分类表单"
-      v-model:visible="modalVisible"
+      v-model:open="modalVisible"
       :confirm-loading="modalLoading"
       @ok="handleModalOk"
   >

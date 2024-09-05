@@ -62,7 +62,7 @@
   </a-layout-content>
   <a-modal
       title="电子书表单"
-      v-model:visible="modalVisible"
+      v-model:open="modalVisible"
       :confirm-loading="modalLoading"
       @ok="handleModalOk"
   >
