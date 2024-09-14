@@ -21,7 +21,10 @@
       <a-menu-item key="/about">
         <router-link to="/about">关于我们</router-link>
       </a-menu-item>
-      <a @click="showLoginModal" class="login-menu">
+      <a class="login-menu" v-if="Boolean(user.id)">
+        <span>您好：{{user.name}}</span>
+      </a>
+      <a @click="showLoginModal" class="login-menu" v-else>
         <span>登录</span>
       </a>
     </a-menu>
@@ -56,6 +59,10 @@ export default defineComponent({
   name: 'the-header',
   setup() {
     // 用来登录
+    const user = ref();
+    user.value = {};
+
+    // 用来登录
     const loginUser = ref({
       loginName: "test",
       password: "test"
@@ -78,6 +85,7 @@ export default defineComponent({
         if(data.success){
           loginModalVisible.value = false;
           message.success("登录成功！");
+          user.value = data.content;
         }else{
           message.error(data.message);
         }
@@ -90,6 +98,7 @@ export default defineComponent({
       showLoginModal,
       loginUser,
       login,
+      user,
     }
 
   }
@@ -118,5 +127,10 @@ export default defineComponent({
   color: white;
   position: fixed;
   right: 50px;
+}
+
+.login-menu:hover {
+  text-decoration: underline; /* 鼠标悬停时添加下划线 */
+  color: dodgerblue; /* 鼠标悬停时文字颜色变为蓝色 */
 }
 </style>
