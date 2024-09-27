@@ -75,8 +75,8 @@ export default defineComponent({
 
     // 用来登录
     const loginUser = ref({
-      loginName: "test",
-      password: "test"
+      loginName: "test123",
+      password: "test1213"
     });
 
     const loginModalVisible = ref(false);
@@ -89,6 +89,11 @@ export default defineComponent({
     const login = () => {
       console.log("开始登录");
       loginModalLoading.value = true;
+      if(loginUser.value.password.length<6||loginUser.value.password.length>32){
+        message.warn("密码长度需要在6-32之间")
+        loginModalLoading.value = false;
+        return;
+      }
       loginUser.value.password = hexMd5(loginUser.value.password + KEY);
       axios.post('/user/login',loginUser.value).then((response)=>{
         loginModalLoading.value = false;
