@@ -16,6 +16,7 @@ import com.example.wiki.util.CopyUtil;
 import com.example.wiki.util.RedisUtil;
 import com.example.wiki.util.RequestContext;
 import com.example.wiki.util.SnowFlake;
+import com.example.wiki.websocket.WebSocketServer;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -47,6 +48,9 @@ public class DocService {
 
     @Resource
     public RedisUtil redisUtil;
+
+    @Resource
+    public WebSocketServer webSocketServer;
 
     private static final Logger LOG = LoggerFactory.getLogger(DocService.class);
 
@@ -150,6 +154,10 @@ public class DocService {
         }else{
             throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
         }
+        // 推送消息
+        Doc docDb = docMapper.selectByPrimaryKey(id);
+        webSocketServer.sendInfo("【"+docDb.getName()+"】被点赞！");
+
     }
 
     public void updateEbookInfo(){
