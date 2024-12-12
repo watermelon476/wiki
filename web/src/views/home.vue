@@ -25,7 +25,7 @@
       </a-layout-sider>
       <a-layout-content :style="{ padding: '0 24px', minHeight: '280px' }">
         <div class="welcome" v-show="isShowWelcome">
-          <h1>欢迎使用知识库</h1>
+          <TheWelcome/>
         </div>
         <a-list v-show="!isShowWelcome"
                 item-layout="vertical" size="large"
@@ -71,6 +71,7 @@ import {StarOutlined, LikeOutlined, MessageOutlined} from '@ant-design/icons-vue
 import axios from 'axios'
 import {Tool} from "@/util/tool";
 import {message} from "ant-design-vue";
+import TheWelcome from "@/components/the-welcome.vue";
 
 // const listData: Record<string, string>[] = [];
 // for (let i = 0; i < 23; i++) {
@@ -87,6 +88,9 @@ import {message} from "ant-design-vue";
 
 export default defineComponent({
   name: 'Home',
+  components:{
+    TheWelcome
+  },
   setup: function () {
     // console.log('setup');
     const ebooks = ref();
