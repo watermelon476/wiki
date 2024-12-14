@@ -1,6 +1,6 @@
 <template>
   <a-layout-header class="header">
-    <div class="logo"/>
+    <div class="logo">wiki知识库</div>
     <a-menu
         theme="dark"
         mode="horizontal"
@@ -140,8 +140,11 @@ export default defineComponent({
   float: left;
   width: 120px;
   height: 31px;
-  margin: 16px 24px 16px 0;
-  background: rgba(255, 255, 255, 0.3);
+  margin: 0px 12px 36px 12px;
+  /*margin: 16px 24px 16px 0;*/
+  /*background: rgba(255, 255, 255, 0.3);*/
+  color: white;
+  font-size: 18px;
 }
 
 .ant-row-rtl .logo {
